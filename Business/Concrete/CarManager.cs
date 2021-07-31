@@ -1,9 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constraints;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
 using Entity.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +26,14 @@ namespace Business.Concrete
         }
 
 
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
 
+            ValidationTool.Validate(new CarValidator(), car);
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
+
         }
 
         public IResult Delete(Car car)
