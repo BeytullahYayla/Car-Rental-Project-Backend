@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Utilities.Business
+namespace Core.Utilities.Businness
 {
-    public class BusinessRules
+    public class BusinnessRules
     {
         public static IResult Run(params IResult[] logics)
         {
@@ -17,8 +17,10 @@ namespace Core.Utilities.Business
                 {
                     return logic;
                 }
+                
             }
             return null;
+            
         }
     }
 }

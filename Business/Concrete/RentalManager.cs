@@ -1,6 +1,5 @@
 ﻿using Business.Abstract;
 using Business.Constraints;
-using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -25,14 +24,7 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            IResult result = BusinessRules.Run(
-                IsThatCarDeliveried(rental.CarID));
-
-            if (result != null)
-            {
-                return result;
-            }
-
+            
             
            _rentalDal.Add(rental);
            return new SuccessResult(Messages.RentalAdded);

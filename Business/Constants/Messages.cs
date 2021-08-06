@@ -17,6 +17,9 @@ namespace Business.Constraints
         public static string BrandListed = "Marka Başarı ile Getirildi";
         public static string BrandUpdated ="Marka Başarı ile Güncellendi";
         public static string BrandCantUpdated = "Marka Güncellenemedi... Böyle Birşey Artık Olmayabilir";
+        public static string BrandCountOfError = "Bir markadan en fazla 10 tane olabilir...";
+        public static string BrandNameAlreadyExist = "Bu marka zaten veritabanında kayıtlı...";
+        public static string BrandLimitExceeded = "Marka limiti asildi....";
         // End of Brand Manager Messages
         // Color Manager Messages
         public static string ColorAdded = "Renk Başarı ile Eklendi";

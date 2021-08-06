@@ -1,8 +1,10 @@
 ﻿using Business.Abstract;
+using Business.CCS;
 using Business.Constraints;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns;
+using Core.Utilities.Businness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -19,20 +21,40 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
-
-        public CarManager(ICarDal carDal)
+        ILogger _logger;
+        IBrandService _brandService;
+        public CarManager(ICarDal carDal, ILogger logger,IBrandService brandService)
         {
             _carDal = carDal;
+            _logger = logger;
+            _brandService = brandService;
         }
 
 
+
         [ValidationAspect(typeof(CarValidator))]
+
         public IResult Add(Car car)
         {
 
-            ValidationTool.Validate(new CarValidator(), car);
+            //A brand can include just 10 car
+
+            IResult result = BusinnessRules.Run(CheckIfCarCountOfBrandCorrect(car.BrandID),CheckIfBrandLimitExceeded());
+            if (result != null)
+            {
+                return result;
+
+            }
+
+
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
+            
+
+
+
+            // ValidationTool.Validate(new CarValidator(), car);
+
 
         }
 
@@ -89,5 +111,25 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListedDetailDto);
         }
+
+        private IResult CheckIfCarCountOfBrandCorrect(int brandID)
+        {
+            var result = _carDal.GetAll(p => p.BrandID == brandID).Count;//We find count of cars
+            if (result > 10)
+            {
+                return new ErrorResult(Messages.BrandCountOfError);
+            }
+            return new SuccessResult(Messages.BrandAdded);
+        }
+        private IResult CheckIfBrandLimitExceeded()
+        {
+            var result = _brandService.GetAll();
+            if (result.Data.Count>15)
+            {
+                return new ErrorResult(Messages.BrandLimitExceeded);
+            }
+            return new SuccessResult(Messages.CarAdded);
+        }
+
     }
 }
