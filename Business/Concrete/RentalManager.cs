@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constraints;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Businness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -14,7 +17,7 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
-        
+
 
         public RentalManager(IRentalDal rentalDal)
         {
@@ -22,28 +25,38 @@ namespace Business.Concrete
         }
 
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            
-            
-           _rentalDal.Add(rental);
-           return new SuccessResult(Messages.RentalAdded);
-            
+
+            IResult result = BusinnessRules.Run(CheckIfRentalExists(rental),IsThatCarDeliveried(rental.RentalID));
+            if (result != null)
+            {
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.RentalAdded);
+            }
+            return result;
+
+
+
 
         }
 
         public IResult Delete(Rental rental)
         {
-            try
+            IResult result = BusinnessRules.Run(CheckIfRentalExists(rental));
+            if (result == null)
             {
                 _rentalDal.Delete(rental);
                 return new SuccessResult(Messages.RentalDeleted);
             }
-            catch (Exception)
-            {
+            return result;
 
-                return new ErrorResult(Messages.RentalCantDeledet);
-            }
+
+
+
+
+
         }
 
         public IDataResult<List<Rental>> GetAll()
@@ -56,27 +69,40 @@ namespace Business.Concrete
             return new SuccessDataResult<Rental>(_rentalDal.Get(rental => rental.CustomerID == id), Messages.RentalListed);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
-            try
+
+            IResult result = BusinnessRules.Run(CheckIfRentalExists(rental));
+            if (result == null)
             {
                 _rentalDal.Update(rental);
                 return new SuccessResult(Messages.RentalUpdated);
-            }
-            catch (Exception)
-            {
 
-                return new ErrorResult(Messages.RentalCantUpdated);
             }
+
+
+
+            return result;
+
         }
-        public IResult IsThatCarDeliveried(int id)
+        private IResult IsThatCarDeliveried(int id)
         {
-            var result = _rentalDal.Get(r => r.CarID ==id && r.ReturnDate==null); // parametre olarak aldıgın id ye göre rentali getir. ve gelen kayıt'ın returndate i boş ise getir
+            var result = _rentalDal.Get(r => r.CarID == id && r.ReturnDate == null); 
             if (result == null)
             {
-                return new SuccessResult(); // demek ki hiçbir ilan gelmemiş, demek ki return tarihi boş değil yani araç teslim edilmiş.
+                return new SuccessResult();
             }
-            return new ErrorResult("Araba Teslim Edilmemiş bu şartlar altında araba kiralanamaz");
+            return new ErrorResult(Messages.CarDeliveryError);
+        }
+        private IResult CheckIfRentalExists(Rental rental)
+        {
+            var result = _rentalDal.GetAll(p => p.RentalID == rental.RentalID).Count;
+            if (result == 0)
+            {
+                return new ErrorResult(Messages.RentalNotExists);
+            }
+            return new SuccessResult();
         }
     }
 }

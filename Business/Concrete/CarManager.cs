@@ -23,7 +23,7 @@ namespace Business.Concrete
         ICarDal _carDal;
         ILogger _logger;
         IBrandService _brandService;
-        public CarManager(ICarDal carDal, ILogger logger,IBrandService brandService)
+        public CarManager(ICarDal carDal, ILogger logger, IBrandService brandService)
         {
             _carDal = carDal;
             _logger = logger;
@@ -39,7 +39,7 @@ namespace Business.Concrete
 
             //A brand can include just 10 car
 
-            IResult result = BusinnessRules.Run(CheckIfCarCountOfBrandCorrect(car.BrandID),CheckIfBrandLimitExceeded());
+            IResult result = BusinnessRules.Run(CheckIfCarCountOfBrandCorrect(car.BrandID), CheckIfBrandLimitExceeded());
             if (result != null)
             {
                 return result;
@@ -49,27 +49,31 @@ namespace Business.Concrete
 
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
-            
 
 
 
-            // ValidationTool.Validate(new CarValidator(), car);
+
+
 
 
         }
 
         public IResult Delete(Car car)
         {
-            try
+            IResult result = BusinnessRules.Run(CheckIfCarExists(car));
+            if (result == null)
             {
                 _carDal.Delete(car);
                 return new SuccessResult(Messages.CarDeleted);
             }
-            catch (Exception)
-            {
 
-                return new ErrorResult(Messages.CarCantDeleted);
-            }
+
+
+            return result;
+
+
+
+
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -89,16 +93,18 @@ namespace Business.Concrete
 
         public IResult Update(Car car)
         {
-            try
+            IResult result = BusinnessRules.Run(CheckIfCarExists(car));
+            if (result == null)
             {
                 _carDal.Update(car);
                 return new SuccessResult(Messages.CarUpdated);
             }
-            catch (Exception)
-            {
 
-                return new ErrorResult(Messages.CarCantUpdated);
-            }
+
+
+
+            return result;
+
         }
 
         public IDataResult<Car> GetById(int id)
@@ -119,16 +125,25 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.BrandCountOfError);
             }
-            return new SuccessResult(Messages.BrandAdded);
+            return new SuccessResult();
         }
         private IResult CheckIfBrandLimitExceeded()
         {
             var result = _brandService.GetAll();
-            if (result.Data.Count>15)
+            if (result.Data.Count > 15)
             {
                 return new ErrorResult(Messages.BrandLimitExceeded);
             }
-            return new SuccessResult(Messages.CarAdded);
+            return new SuccessResult();
+        }
+        private IResult CheckIfCarExists(Car car)
+        {
+            var result = _carDal.GetAll(p => p.CarID == car.CarID).Count;
+            if (result != 0)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
 
     }

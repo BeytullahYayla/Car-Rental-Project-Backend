@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constraints;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Businness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -21,23 +24,32 @@ namespace Business.Concrete
         }
 
     
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer customer)
         {
-            _customerDal.Add(customer);
-            return new SuccessResult(Messages.CustomerAdded);
+            IResult result = BusinnessRules.Run(CheckIfCustomerExists(customer));
+            if (result!=null)
+            {
+                _customerDal.Add(customer);
+                return new SuccessResult(Messages.CustomerAdded);
+            }
+            return result;
+           
         }
 
         public IResult Delete(Customer customer)
         {
-            try
+            IResult result = BusinnessRules.Run(CheckIfCustomerExists(customer));
+            if (result==null)
             {
                 _customerDal.Delete(customer);
                 return new SuccessResult(Messages.CustomerDeleted);
             }
-            catch (Exception)
-            {
-                return new ErrorResult(Messages.CustomerCantDeledet);
-            }
+            return result;
+                
+            
+          
+            
         }
 
         public IDataResult<List<Customer>> GetAll()
@@ -51,17 +63,31 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserID == id), Messages.CustomerListed);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
+
         public IResult Update(Customer customer)
         {
-            try
+            IResult result = BusinnessRules.Run(CheckIfCustomerExists(customer));
+            if (result==null)
             {
+
                 _customerDal.Update(customer);
                 return new SuccessResult(Messages.CustomerUpdated);
             }
-            catch (Exception)
+
+
+
+            return result;
+            
+        }
+        private IResult CheckIfCustomerExists(Customer customer)
+        {
+            var result = _customerDal.GetAll(p => p.UserID == customer.UserID).Count;
+            if (result==0)
             {
-                return new ErrorResult(Messages.CustomerCantUpdated);
+                return new ErrorResult(Messages.CustomerNotExists);
             }
+            return new SuccessResult();
         }
     }
 }

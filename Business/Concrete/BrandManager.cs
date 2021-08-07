@@ -29,8 +29,8 @@ namespace Business.Concrete
         public IResult Add(Brand brand)
         {
 
-           IResult result= BusinnessRules.Run(CheckIfBrandExists(brand));
-            if (result!=null)
+            IResult result = BusinnessRules.Run(CheckIfBrandExists(brand));
+            if (result != null)
             {
                 return result;
 
@@ -39,23 +39,26 @@ namespace Business.Concrete
             _brandDal.Add(brand);
             return new SuccessResult(Messages.BrandAdded);
 
-            
+
 
 
         }
 
         public IResult Delete(Brand brand)
         {
-            try
-            {
-                _brandDal.Delete(brand);
-                return new SuccessResult(Messages.BrandDeleted);
-            }
-            catch (Exception)
-            {
 
-                return new ErrorResult(Messages.BrandCantDeledet);
+            IResult result = BusinnessRules.Run(CheckIfBrandExists(brand));
+            if (result == null)
+            {
+                return result;
             }
+            _brandDal.Delete(brand);
+            return new SuccessResult(Messages.BrandDeleted);
+
+
+
+
+
 
         }
 
@@ -69,18 +72,19 @@ namespace Business.Concrete
             return new SuccessDataResult<Brand>(_brandDal.Get(brand => brand.BrandID == id), Messages.BrandsListed);
         }
 
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
         {
-            try
+            IResult result = BusinnessRules.Run(CheckIfBrandExists(brand));
+            if (result==null)
             {
-                _brandDal.Update(brand);
-                return new SuccessResult(Messages.BrandUpdated);
+                return result;
             }
-            catch (Exception)
-            {
-
-                return new ErrorResult(Messages.BrandCantUpdated);
-            }
+            
+            _brandDal.Update(brand);
+            return new SuccessResult(Messages.BrandUpdated);
+            
+            
 
         }
         private IResult CheckIfBrandExists(Brand brand)
@@ -93,5 +97,6 @@ namespace Business.Concrete
             return new ErrorResult(Messages.BrandNameAlreadyExist);
 
         }
+
     }
 }

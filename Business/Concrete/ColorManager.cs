@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constraints;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Businness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -19,26 +22,31 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-       
 
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Color color)
         {
-            _colorDal.Add(color);
-            return new SuccessResult (Messages.ColorAdded);
+            IResult result = BusinnessRules.Run(CheckIfColorExists(color));
+            if (result==null)
+            {
+                _colorDal.Add(color);
+                return new SuccessResult(Messages.ColorAdded);
+            }
+            return result;
         }
 
         public IResult Delete(Color color)
         {
-            try
+
+            IResult result = BusinnessRules.Run(CheckIfColorExists(color));
+            if (result!=null)
             {
                 _colorDal.Delete(color);
                 return new SuccessResult(Messages.ColorDeleted);
             }
-            catch (Exception)
-            {
 
-                return new ErrorResult(Messages.ColorCantDeleted);
-            }
+            return result;
+            
         }
 
         public IDataResult<List<Color>> GetAll()
@@ -47,7 +55,7 @@ namespace Business.Concrete
             //return new SuccessDataResult<List<Color>>(_colorDal.GetAll(),Messages.ColorsListed);
             if (result.Count < 0)
             {
-                return new ErrorDataResult<List<Color>>(Messages.ColorNotFound);
+                return new ErrorDataResult<List<Color>>(Messages.ColorNotExists);
             }
             return new SuccessDataResult<List<Color>>(result, Messages.ColorListed);
         }
@@ -57,18 +65,32 @@ namespace Business.Concrete
             return new SuccessDataResult<Color>(_colorDal.Get(color => color.ColorID == id),Messages.ColorListed);
         }
 
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Color color)
         {
-            try
+
+            IResult result = BusinnessRules.Run(CheckIfColorExists(color));
+            if (result==null)
             {
                 _colorDal.Update(color);
                 return new SuccessResult(Messages.ColorUpdated);
             }
-            catch (Exception)
-            {
+            return result;
+                
+            
+            
 
-                return new ErrorResult(Messages.ColorCantUpdated);
+                
+            
+        }
+        private IResult CheckIfColorExists(Color color)
+        {
+            var result = _colorDal.GetAll(p=>p.ColorID==color.ColorID).Count;
+            if (result==0)
+            {
+                return new ErrorResult(Messages.ColorNotExists);
             }
+            return new SuccessResult();
         }
     }
 }
