@@ -4,6 +4,8 @@ using Business.Abstract;
 using Business.CCS;
 using Business.Concrete;
 using Castle.DynamicProxy;
+using Core.Utilities.Helpers;
+using Core.Utilities.Helpers.GuidHelper;
 using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -38,6 +40,14 @@ namespace Business.Dependency_Resolvers.Autofac
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>();
 
             builder.RegisterType<FileLogger>().As<ILogger>();
+
+            builder.RegisterType<CarImageManager>().As<ICarImageService>();
+            builder.RegisterType<EfCarImageDal>().As<ICarImageDal>();
+
+            builder.RegisterType<FileManager>().As<IFileHelper>();
+            builder.RegisterType<GuidManager>().As<IGuidHelper>();
+            
+            
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

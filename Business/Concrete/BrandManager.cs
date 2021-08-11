@@ -30,14 +30,13 @@ namespace Business.Concrete
         {
 
             IResult result = BusinnessRules.Run(CheckIfBrandExists(brand));
-            if (result != null)
+            if (result == null)
             {
-                return result;
-
+                _brandDal.Add(brand);
+                return new SuccessResult(Messages.BrandAdded);
             }
 
-            _brandDal.Add(brand);
-            return new SuccessResult(Messages.BrandAdded);
+            return result;
 
 
 
@@ -94,7 +93,7 @@ namespace Business.Concrete
             {
                 return new SuccessResult(Messages.BrandAdded);
             }
-            return new ErrorResult(Messages.BrandNameAlreadyExist);
+            return new ErrorResult();
 
         }
 

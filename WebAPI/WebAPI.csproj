@@ -15,7 +15,9 @@
 		<ProjectReference Include="..\Entity\Entity.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="wwwroot\images\" />
+	  <None Include="wwwroot\images\Ford Puma.jpg" />
+	  <None Include="wwwroot\images\Ford Raptor.jpg" />
+	  <None Include="wwwroot\images\ToyotaCorolla.png" />
 	</ItemGroup>
 	
 </Project>

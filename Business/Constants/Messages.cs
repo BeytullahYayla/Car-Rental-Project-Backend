@@ -79,15 +79,8 @@ namespace Business.Constraints
         public static string RentalNotExists = "Kiralanma bilgisi veritabaninda kayitli degil...";
         public static string CarDeliveryError = "Arac henuz teslim edilmemistir...";
         // End of Rental Manager Messages
-        // Car Image Manager Messages
-        public static string OverflowCarImageMessage = "Aracın 5 ten fazla Resmi olamaz";
-        public static string CarImageAdded = "Araç Resmi Başarı İle Eklendi";
-        public static string CarImageNotFound = "Resim Bulunamadı";
-        public static string CarImageDeleted = "Araç Resmi Silindi";
-        public static string CarImagesListed = "Araç Resimleri Listeleni";
-        public static string CarImageListed = "Araç Resimi Getirildi";
-        public static string CarImageUpdated = "Araç Resmi Güncellendi";
-
         
+
+       
     }
 }
