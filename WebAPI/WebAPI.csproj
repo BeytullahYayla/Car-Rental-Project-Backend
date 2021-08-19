@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 	<ItemGroup>
@@ -13,11 +14,6 @@
 		<ProjectReference Include="..\Core\Core.csproj" />
 		<ProjectReference Include="..\DataAccess\DataAccess.csproj" />
 		<ProjectReference Include="..\Entity\Entity.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="wwwroot\images\Ford Puma.jpg" />
-	  <None Include="wwwroot\images\Ford Raptor.jpg" />
-	  <None Include="wwwroot\images\ToyotaCorolla.png" />
 	</ItemGroup>
 	
 </Project>

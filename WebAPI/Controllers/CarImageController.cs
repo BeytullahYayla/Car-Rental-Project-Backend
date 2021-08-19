@@ -4,6 +4,10 @@ using Entity.Concrete;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -13,7 +17,7 @@ namespace WebAPI.Controllers
     {
         IFileHelper _fileHelper;
         ICarImageService _carImageService;
-        
+
         public CarImagesController(IFileHelper fileHelper, ICarImageService carImageService)
         {
             _fileHelper = fileHelper;
@@ -21,18 +25,18 @@ namespace WebAPI.Controllers
         }
         [HttpPost("upload")]
 
-        public IActionResult Upload([FromForm] IFormFile file, [FromForm] CarImage carImage)
+        public IActionResult Upload([FromForm] IFormFile carImages, [FromForm] CarImage carImage)
         {
 
-            var result = _carImageService.Add(file, carImage);
+            var result = _carImageService.Add(carImages, carImage);
 
             if (result.Success)
             {
-                return Ok(result);
+                return Ok();
             }
-            return BadRequest(result);
+            return BadRequest();
         }
-        [HttpDelete("delete")]
+        [HttpPost("delete")]
         public IActionResult Delete([FromForm] int id)
         {
             var carImage = _carImageService.GetById(id).Data;
@@ -43,11 +47,11 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
-        [HttpPut("update")]
-        public IActionResult Update([FromForm] IFormFile file, [FromForm] int id)
+        [HttpPost("update")]
+        public IActionResult Update([FromForm] IFormFile carImages, [FromForm] int id)
         {
             var carImage = _carImageService.GetById(id).Data;
-            var result = _carImageService.Update(file, carImage);
+            var result = _carImageService.Update(carImages, carImage);
             if (result.Success)
             {
                 return Ok(result);

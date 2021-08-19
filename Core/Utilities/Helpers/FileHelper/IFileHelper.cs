@@ -8,15 +8,12 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Helpers
 {
+
     public interface IFileHelper
     {
-        void DeleteOldFile(string directory);
-        void CreateFile(string directory, IFormFile file);
-        void CheckDirectoryExist(string directory);
-        IResult CheckFileTypeValid(string type);
-        IResult CheckFileExist(IFormFile file);
-        IResult Upload(IFormFile file);
-        IResult Update(IFormFile file, string imagePath);
-        IResult Delete(string path);
+        string Upload(IFormFile file, string root);
+        void Delete(string filePath);
+        string Update(IFormFile file, string filePath, string root);
     }
+
 }
