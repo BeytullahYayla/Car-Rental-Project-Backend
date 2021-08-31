@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Entity.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,6 +57,7 @@ namespace Business.Constraints
         public static string UserCantUpdated = "Kullanıcı Güncellenemedi... Böyle Birşey Artık Olmayabilir.";
         public static string UsersListed = "Kullanıcılar Başarı ile Listelendi";
         public static string UserListed = "Kullanıcı Başarı ile Getirildi";
+        public static string UserCantFound = "Kullanici Bulunamadi";
        
         // End of User Manager Messages
         // Customer Manager Messages
@@ -78,9 +81,20 @@ namespace Business.Constraints
         public static string RentalProblem = "Araç Kiralanamadı... Araç yok";
         public static string RentalNotExists = "Kiralanma bilgisi veritabaninda kayitli degil...";
         public static string CarDeliveryError = "Arac henuz teslim edilmemistir...";
-        // End of Rental Manager Messages
-        
 
-       
+
+        // End of Rental Manager Messages
+
+        //Authoraziation Manager Messages
+        public static string AuthorizationDenied = "Yetkilendirme Basarisiz Oldu";
+
+        public static string AccessTokenCreated = "Acces Token Basariyla Olusturuldu";
+
+        public static string WrongPassword = "Yanlis Sifre!";
+        public static string SuccessfullyLogin = "Basariyla Giris Yapildi";
+
+        public static string SuccessfullyRegistered = "Kayit Basarili";
+
+        public static string UserAlreadyExist = "Kullanici Zaten Kayitli";
     }
 }

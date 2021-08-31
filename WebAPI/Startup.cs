@@ -1,7 +1,10 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -30,30 +34,27 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Autofac, Ninject, CastleWindsor, StructurMap, LightInject, DryInject --> IoC Container
-            //AOP --> bir metotun önünde sonunda hata verdiðinde çalýþan kod parçacýklarý
+           
             services.AddControllers();
+            var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+                });
 
 
-            //BU IoC Yapýsý Business da Autofac'e Çekildi
-            // For Brand Service
-               //services.AddSingleton<IBrandService,BrandManager>();
-               //services.AddSingleton<IBrandDal, EfBrandDal>();
-            // For Color Service
-               //services.AddSingleton<IColorService, ColorManager>();
-               //services.AddSingleton<IColorDal, EfColorDal>();
-            // For Car Service
-                //services.AddSingleton<ICarService, CarManager>();
-                //services.AddSingleton<ICarDal, EfCarDal>();
-            // For User Service
-                //services.AddSingleton<IUserService, UserManager>();
-                //services.AddSingleton<IUserDal, EfUserDal>();
-            // For Customer Service
-                //services.AddSingleton<ICustomerService, CustomerManager>();
-                //services.AddSingleton<ICustomerDal, EfCustomerDal>();
-            // For Rental Service
-                //services.AddSingleton<IRentalService, RentalManager>();
-                //services.AddSingleton<IRentalDal, EfRentalDal>();
+
 
             services.AddSwaggerGen(c =>
             {
@@ -78,6 +79,7 @@ namespace WebAPI
             app.UseAuthorization();
 
             app.UseStaticFiles();
+            app.UseAuthentication();
 
 
             app.UseEndpoints(endpoints =>
