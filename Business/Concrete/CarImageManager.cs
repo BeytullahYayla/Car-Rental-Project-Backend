@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
+using Business.BusinnessAspect.Autofac;
 using Business.Constants;
+using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Businness;
 using Core.Utilities.Helpers;
 
@@ -34,17 +36,20 @@ namespace Business.Concrete
             return new SuccessResult(ImageConstants.ImageDeleted);
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
 
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), ImageConstants.ImageGettedAll);
         }
+        [CacheAspect]
 
         public IDataResult<CarImage> GetById(int imageId)
         {
             return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarImageID == imageId), ImageConstants.ImageGettedById);
         }
-
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [SecuredOperation("carimage.update,admin")]
         public IResult Update(IFormFile carImages, CarImage carImage)
         {
             var result = BusinnessRules.Run(ChechkImageLimit(carImage.CarID));
@@ -57,6 +62,9 @@ namespace Business.Concrete
             return new ErrorResult();
 
         }
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [SecuredOperation("carimage.add,admin")]
+
 
         public IResult Add(IFormFile carImages, CarImage carImage)
         {
@@ -79,6 +87,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
         {
             var result = BusinnessRules.Run(CheckCarImage(carId));
@@ -90,6 +99,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarID == carId), ImageConstants.ImageGettedByCarId);
 
         }
+        [CacheAspect]
         private IDataResult<List<CarImage>> GetDefaultImage(int carId)
         {
             List<CarImage> carImage = new List<CarImage>();

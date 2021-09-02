@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinnessAspect.Autofac;
 using Business.Constraints;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Businness;
 using Core.Utilities.Results;
@@ -26,6 +28,8 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
+        [SecuredOperation("rental.add,admin")]
         public IResult Add(Rental rental)
         {
 
@@ -41,6 +45,8 @@ namespace Business.Concrete
 
 
         }
+        [CacheRemoveAspect("IRentalService.Get")]
+        [SecuredOperation("rental.delete,admin")]
 
         public IResult Delete(Rental rental)
         {
@@ -59,17 +65,21 @@ namespace Business.Concrete
 
         }
 
+        [CacheAspect]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
         }
 
+        [CacheAspect]
         public IDataResult<Rental> GetByCustomerId(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(rental => rental.CustomerID == id), Messages.RentalListed);
         }
 
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
+        [SecuredOperation("rental.update,admin")]
         public IResult Update(Rental rental)
         {
 

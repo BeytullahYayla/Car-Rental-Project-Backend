@@ -2,6 +2,9 @@
 using Business.CCS;
 using Business.Constraints;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns;
 using Core.Utilities.Businness;
@@ -33,6 +36,8 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
+        [PerformanceAspect(10)] 
 
         public IResult Add(Car car)
         {
@@ -57,7 +62,7 @@ namespace Business.Concrete
 
 
         }
-
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
             IResult result = BusinnessRules.Run(CheckIfCarExists(car));
@@ -76,20 +81,23 @@ namespace Business.Concrete
 
         }
 
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
-        }
-
+        } 
+        [CacheAspect]
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(car => car.BrandID == id), Messages.CarListedByBrand);
         }
 
+        [CacheAspect]
         public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(car => car.BrandID == id), Messages.CarListedByColor);
         }
+        [CacheRemoveAspect("ICarService.Get")]
 
         public IResult Update(Car car)
         {
@@ -106,13 +114,14 @@ namespace Business.Concrete
             return result;
 
         }
+        [CacheAspect]
 
         public IDataResult<Car> GetById(int id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(car => car.CarID == id), Messages.CarListed);
 
         }
-
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsDto()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListedDetailDto);
@@ -145,6 +154,16 @@ namespace Business.Concrete
             }
             return new ErrorResult();
         }
-
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice>800)
+            {
+                throw new Exception("");
+            }
+            Add(car);
+            return null;
+        }
     }
 }
