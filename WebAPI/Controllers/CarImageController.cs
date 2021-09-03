@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
     {
         IFileHelper _fileHelper;
         ICarImageService _carImageService;
+        
 
         public CarImagesController(IFileHelper fileHelper, ICarImageService carImageService)
         {
@@ -25,10 +26,11 @@ namespace WebAPI.Controllers
         }
         [HttpPost("upload")]
 
-        public IActionResult Upload([FromForm] IFormFile carImages, [FromForm] CarImage carImage)
+        public IActionResult Upload([FromForm] IFormFile file, [FromForm] CarImage carImage)
         {
 
-            var result = _carImageService.Add(carImages, carImage);
+            carImage.CarID = 2;
+            var result = _carImageService.Add(file, carImage);
 
             if (result.Success)
             {
@@ -48,10 +50,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("update")]
-        public IActionResult Update([FromForm] IFormFile carImages, [FromForm] int id)
+        public IActionResult Update([FromForm] IFormFile file, [FromForm] int id)
         {
             var carImage = _carImageService.GetById(id).Data;
-            var result = _carImageService.Update(carImages, carImage);
+            var result = _carImageService.Update(file, carImage);
             if (result.Success)
             {
                 return Ok(result);

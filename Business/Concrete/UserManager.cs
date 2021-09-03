@@ -22,14 +22,14 @@ namespace Business.Concrete
             _userDal = userDal;
         }
         
-        [SecuredOperation("user.add,admin")]
+ 
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
-        [SecuredOperation("user.getclaims,admin")]
+      
         [CacheRemoveAspect("IUserService.Get")]
         public List<OperationClaim> GetClaims(User user)
         {
@@ -37,7 +37,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("user.delete,admin")]
+        
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User user)
         {
@@ -69,7 +69,7 @@ namespace Business.Concrete
             return _userDal.Get(u => u.Email == email);
         }
 
-        [SecuredOperation("user.update,admin")]
+        
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User user)
         {
