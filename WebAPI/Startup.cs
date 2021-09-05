@@ -1,29 +1,17 @@
-using Business.Abstract;
-using Business.Concrete;
+using Core.Dependency_Resolvers;
 using Core.Extentions;
-using Core.IoC;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
-using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Core.Utilities.IoC;
-using Core.Dependency_Resolvers;
 
 namespace WebAPI
 {
@@ -62,7 +50,7 @@ namespace WebAPI
                 new CoreModule()
 
             }) ;
-
+            services.AddCors();
 
 
             services.AddSwaggerGen(c =>
@@ -81,6 +69,7 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
+            app.UseCors(builder=>builder.WithOrigins("http://localhost:65437", "http://localhost:4200", "http://localhost:52714").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseRouting();
