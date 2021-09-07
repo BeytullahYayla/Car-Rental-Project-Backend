@@ -8,6 +8,7 @@ using Core.Utilities.Businness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
+using Entity.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(rental => rental.CustomerID == id), Messages.RentalListed);
         }
-
+        
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         [SecuredOperation("rental.update,admin")]
@@ -113,6 +114,11 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.RentalNotExists);
             }
             return new SuccessResult();
+        }
+
+        public IDataResult<List<RentalDetailsDto>> GetRentalDetails()
+        {
+            return new SuccessDataResult<List<RentalDetailsDto>>(_rentalDal.GetRentalDetailsDto(),"Kiralamalar Basari Ile Getirildi");
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Business.Concrete
 
     
         [ValidationAspect(typeof(CustomerValidator))]
-        [SecuredOperation("customer.add,admin")]
+        
         [CacheRemoveAspect("ICustomerService.Get")]
         public IResult Add(Customer customer)
         {

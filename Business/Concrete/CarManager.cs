@@ -37,7 +37,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
-        [PerformanceAspect(10)] 
+        
 
         public IResult Add(Car car)
         {
