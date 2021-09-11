@@ -26,7 +26,7 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        //[SecuredOperation("brand.add,admin")]
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand brand)
@@ -46,7 +46,7 @@ namespace Business.Concrete
 
         }
         [CacheRemoveAspect("IBrandService.Get")]
-        //[SecuredOperation("brand.delete,admin")]
+        [SecuredOperation("brand.delete,admin")]
         public IResult Delete(Brand brand)
         {
 

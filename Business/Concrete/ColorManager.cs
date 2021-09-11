@@ -25,13 +25,12 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        [ValidationAspect(typeof(ColorValidator))]
-        [CacheRemoveAspect("IColorService.Get")] 
-        [SecuredOperation("brand.add,admin")]
+        
+        [SecuredOperation("admin,color.add")]
         public IResult Add(Color color)
         {
             IResult result = BusinnessRules.Run(CheckIfColorExists(color));
-            if (result==null)
+            if (result!=null)
             {
                 _colorDal.Add(color);
                 return new SuccessResult(Messages.ColorAdded);
@@ -39,8 +38,8 @@ namespace Business.Concrete
             return result;
         }
 
-        [CacheRemoveAspect("IColorService.Get")]
-        [SecuredOperation("brand.delete,admin")]
+       
+      [SecuredOperation("admin,color.delete")]
         public IResult Delete(Color color)
         {
 
@@ -54,7 +53,7 @@ namespace Business.Concrete
             return result;
             
         }
-        [CacheAspect]
+       
 
         public IDataResult<List<Color>> GetAll()
         {
@@ -73,9 +72,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Color>(_colorDal.Get(color => color.ColorID == id),Messages.ColorListed);
         }
 
-        [ValidationAspect(typeof(ColorValidator))]
-        [CacheRemoveAspect("IColorService.Get")]
-        [SecuredOperation("brand.update,admin")]
+        [SecuredOperation("admin,car.update")]
         public IResult Update(Color color)
         {
 

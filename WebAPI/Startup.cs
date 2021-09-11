@@ -69,7 +69,7 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
-            app.UseCors(builder=>builder.WithOrigins("http://localhost:65437", "http://localhost:4200", "http://localhost:52714", "http://localhost:65319").AllowAnyHeader());
+            app.UseCors(builder=>builder.WithOrigins("http://localhost:65437", "http://localhost:4200", "http://localhost:52714", "http://localhost:65319", "http://localhost:57880").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseRouting();

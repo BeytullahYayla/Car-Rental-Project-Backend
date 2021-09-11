@@ -29,6 +29,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CustomerValidator))]
         
         [CacheRemoveAspect("ICustomerService.Get")]
+        [SecuredOperation("admin,customer.add")]
         public IResult Add(Customer customer)
         {
             IResult result = BusinnessRules.Run(CheckIfCustomerExists(customer));

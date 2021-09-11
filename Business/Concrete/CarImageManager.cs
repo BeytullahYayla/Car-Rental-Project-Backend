@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿
+using Business.Abstract;
 using Business.BusinnessAspect.Autofac;
 using Business.Constants;
 using Core.Aspects.Autofac.Caching;
@@ -29,6 +30,7 @@ namespace Business.Concrete
             _fileHelper = fileHelper;
             _carService = carService;
         }
+        [SecuredOperation("admin")]
         public IResult Delete(CarImage carImage)
         {
             _fileHelper.Delete(PathConstants.ImagesPath + carImage.ImagePath);
@@ -49,7 +51,7 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarImageID == imageId), ImageConstants.ImageGettedById);
         }
         [CacheRemoveAspect("ICarImageService.Get")]
-        //[SecuredOperation("carimage.update,admin")]
+        [SecuredOperation("admin")]
         public IResult Update(IFormFile carImages, CarImage carImage)
         {
             var result = BusinnessRules.Run(ChechkImageLimit(carImage.CarID));
@@ -63,8 +65,8 @@ namespace Business.Concrete
 
         }
         [CacheRemoveAspect("ICarImageService.Get")]
-        //[SecuredOperation("carimage.add,admin")]
-
+       
+        [SecuredOperation("admin")]
 
         public IResult Add(IFormFile carImages, CarImage carImage)
         {

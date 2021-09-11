@@ -24,6 +24,7 @@ namespace Business.Concrete
         
  
         [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperation("admin")]
         public IResult Add(User user)
         {
             _userDal.Add(user);
@@ -31,6 +32,7 @@ namespace Business.Concrete
         }
       
         [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperation("admin")]
         public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);
@@ -39,6 +41,7 @@ namespace Business.Concrete
 
         
         [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperation("admin")]
         public IResult Delete(User user)
         {
             try
@@ -53,17 +56,20 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
+        [SecuredOperation("admin")]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(),Messages.UsersListed);
         }
         [CacheAspect]
+        [SecuredOperation("admin")]
         public IDataResult<User> GetById(int id)
         {
             return new SuccessDataResult<User>(_userDal.Get(user => user.UserID == id), Messages.UserListed);
         }
 
         [CacheAspect]
+        [SecuredOperation("admin")]
         public User GetByMail(string email)
         {
             return _userDal.Get(u => u.Email == email);
@@ -71,6 +77,7 @@ namespace Business.Concrete
 
         
         [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperation("admin")]
         public IResult Update(User user)
         {
             try
