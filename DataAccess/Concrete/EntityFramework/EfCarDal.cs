@@ -23,19 +23,42 @@ namespace DataAccess.Concrete.EntityFramework
                              on ca.ColorID equals co.ColorID
                              join br in context.Brands
                              on ca.BrandID equals br.BrandID
+
+
                              select new CarDetailDto
                              {
                                  CarID = ca.CarID,
-                                 BrandID=ca.BrandID,
-                                 ColorID=ca.ColorID,
+                                 BrandID = ca.BrandID,
+                                 ColorID = ca.ColorID,
                                  BrandName = br.BrandName,
                                  ColorName = co.ColorName,
-                                 DailyPrice=ca.DailyPrice,
-                                 Description=ca.Description,
-                                 ModelYear=ca.ModelYear
-                                 
-                             
+                                 DailyPrice = ca.DailyPrice,
+                                 Description = ca.Description,
+                                 ModelYear = ca.ModelYear,
+                                 CarImages = ((from ci in context.CarImages
+                                               where (ca.CarID == ci.CarID)
+                                               select new CarImage
+                                               {
+                                                   CarID = ci.CarID,
+                                                   CarImageID = ci.CarImageID,
+                                                   Date = ci.Date,
+                                                   ImagePath=ci.ImagePath
+                                               }).ToList()).Count == 0
+                                                    ? new List<CarImage> { new CarImage { CarImageID = -1, CarID = ca.CarID, Date = DateTime.Now, ImagePath = "/images/default.jpg" } }
+                                                    : (from ci in context.CarImages
+                                                       where (ca.CarID == ci.CarID)
+                                                       select new CarImage
+                                                       {
+                                                           CarImageID = ci.CarImageID,
+                                                           CarID = ci.CarID,
+                                                           Date = ci.Date,
+                                                           ImagePath = ci.ImagePath
+                                                       }).ToList()
                              };
+
+
+
+
                 return filter == null
                ? result.ToList()
                : result.Where(filter).ToList();

@@ -96,5 +96,6 @@ namespace Business.Constraints
         public static string SuccessfullyRegistered = "Kayit Basarili";
 
         public static string UserAlreadyExist = "Kullanici Zaten Kayitli";
+        public  static string FilterSuccessfull="Arabaya Filtre Basariyla Uygulandi Ve Getirildi";
     }
 }

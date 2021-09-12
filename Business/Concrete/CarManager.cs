@@ -178,7 +178,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.ColorID == id));
         }
 
-
-        
+        public IDataResult<List<CarDetailDto>> GetCarsByFilter(int brandId, int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.BrandID == brandId && p.ColorID == colorId),Messages.FilterSuccessfull);
+        }
     }
 }
