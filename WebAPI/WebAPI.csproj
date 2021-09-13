@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Uploads\Images\default.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Castle.Core" Version="4.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
@@ -21,7 +17,14 @@
 		<ProjectReference Include="..\Entity\Entity.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="wwwroot\" />
+	  <None Include="wwwroot\images\0ea109b6-cca6-46ba-9b09-42893d5d83fe.jpg" />
+	  <None Include="wwwroot\images\3a8ff938-39b0-4904-bd48-6b1e334be487.jpg" />
+	  <None Include="wwwroot\images\4d005095-e239-4985-a76e-e66295d8dc9b.jpg" />
+	  <None Include="wwwroot\images\68d61657-993c-4037-9e55-f701c9e1ad67.jpg" />
+	  <None Include="wwwroot\images\default.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Uploads\" />
 	</ItemGroup>
 	
 </Project>

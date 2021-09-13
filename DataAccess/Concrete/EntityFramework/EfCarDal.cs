@@ -35,36 +35,20 @@ namespace DataAccess.Concrete.EntityFramework
                                  DailyPrice = ca.DailyPrice,
                                  Description = ca.Description,
                                  ModelYear = ca.ModelYear,
-                                 CarImages = ((from ci in context.CarImages
-                                               where (ca.CarID == ci.CarID)
-                                               select new CarImage
-                                               {
-                                                   CarID = ci.CarID,
-                                                   CarImageID = ci.CarImageID,
-                                                   Date = ci.Date,
-                                                   ImagePath=ci.ImagePath
-                                               }).ToList()).Count == 0
-                                                    ? new List<CarImage> { new CarImage { CarImageID = -1, CarID = ca.CarID, Date = DateTime.Now, ImagePath = "/images/default.jpg" } }
-                                                    : (from ci in context.CarImages
-                                                       where (ca.CarID == ci.CarID)
-                                                       select new CarImage
-                                                       {
-                                                           CarImageID = ci.CarImageID,
-                                                           CarID = ci.CarID,
-                                                           Date = ci.Date,
-                                                           ImagePath = ci.ImagePath
-                                                       }).ToList()
+                                 CarImages = (from i in context.CarImages where (ca.CarID == i.CarID) select i.ImagePath).FirstOrDefault()
                              };
-
-
-
-
                 return filter == null
-               ? result.ToList()
-               : result.Where(filter).ToList();
+             ? result.ToList()
+             : result.Where(filter).ToList();
+            };
+
+
+
+
+              
 
 
             }
         }
     }
-}
+

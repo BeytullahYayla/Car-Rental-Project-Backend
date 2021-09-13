@@ -97,5 +97,14 @@ namespace Business.Constraints
 
         public static string UserAlreadyExist = "Kullanici Zaten Kayitli";
         public  static string FilterSuccessfull="Arabaya Filtre Basariyla Uygulandi Ve Getirildi";
+        public static string CarsImagesListed="Araba Resimleri Getirildi";
+        public static string CarImageIdNotExist="Boyle bir car image id yok";
+        public static string CarImageLimitExceeded="Resim sayisi limiti aştı";
+        public static string CarImageDeleted="Araba resmi silindi";
+        public static string ErrorDeletingImage="Resim Silinemedi";
+        public static string CarImageUpdated="Araba resmi güncellendi";
+        public static string ErrorUpdatingImage="Araba resmi güncellenirken bir hata oluştu";
+        public static string CarImageUploaded="Araba resmi yüklendi";
+        public static string CarImageListed="Araba resmi listelendi";
     }
 }

@@ -5,7 +5,7 @@ using Business.CCS;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Helpers;
-using Core.Utilities.Helpers.GuidHelper;
+
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
@@ -46,8 +46,7 @@ namespace Business.Dependency_Resolvers.Autofac
             builder.RegisterType<CarImageManager>().As<ICarImageService>();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>();
 
-            builder.RegisterType<FileManager>().As<IFileHelper>();
-            builder.RegisterType<GuidManager>().As<IGuidHelper>();
+            
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
