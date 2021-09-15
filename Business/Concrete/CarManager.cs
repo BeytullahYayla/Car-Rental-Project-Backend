@@ -118,9 +118,9 @@ namespace Business.Concrete
         
         [CacheAspect]
 
-        public IDataResult<Car> GetById(int id)
+        public IDataResult<List<CarDetailDto>> GetById(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(car => car.CarID == id), Messages.CarListed);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.CarID == id),Messages.CarsListed);
 
         }
         [CacheAspect]
