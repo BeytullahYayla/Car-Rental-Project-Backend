@@ -182,5 +182,20 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.BrandID == brandId && p.ColorID == colorId),Messages.FilterSuccessfull);
         }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandName(string brandName)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.BrandName == brandName),"Markaya Gore Getirildi");
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByColorName(string colorName)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.ColorName == colorName),"Renge Gore Getirildi");
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandAndColorName(string brandName, string colorName)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.BrandName == brandName && p.ColorName == colorName),"Marka ve Renk Adına Gore Getirildi");
+        }
     }
 }
