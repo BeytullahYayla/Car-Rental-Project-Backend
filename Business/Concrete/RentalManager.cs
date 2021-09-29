@@ -33,7 +33,7 @@ namespace Business.Concrete
         [SecuredOperation("admin")]
         public IResult Add(Rental rental)
         {
-
+            
             IResult result = BusinnessRules.Run(CheckIfRentalExists(rental),IsThatCarDeliveried(rental.RentalID));
             if (result != null)
             {
@@ -106,6 +106,7 @@ namespace Business.Concrete
             }
             return new ErrorResult(Messages.CarDeliveryError);
         }
+       
         private IResult CheckIfRentalExists(Rental rental)
         {
             var result = _rentalDal.GetAll(p => p.RentalID == rental.RentalID).Count;
@@ -119,6 +120,11 @@ namespace Business.Concrete
         public IDataResult<List<RentalDetailsDto>> GetRentalDetails()
         {
             return new SuccessDataResult<List<RentalDetailsDto>>(_rentalDal.GetRentalDetailsDto(),"Kiralamalar Basari Ile Getirildi");
+        }
+
+        public IDataResult<List<Rental>> GetRentalByCarId(int carId)
+        {
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(p => p.CarID == carId));
         }
     }
 }

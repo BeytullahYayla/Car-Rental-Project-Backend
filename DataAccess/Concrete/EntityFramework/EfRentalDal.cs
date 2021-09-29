@@ -5,6 +5,7 @@ using Entity.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfRentalDal : EfEntityRepositoryBase<Rental, Context>, IRentalDal
     {
-        public List<RentalDetailsDto> GetRentalDetailsDto()
+        public List<RentalDetailsDto> GetRentalDetailsDto(Expression<Func<RentalDetailsDto, bool>> filter = null)
         {
             using (Context context=new Context())
             {
@@ -32,9 +33,13 @@ namespace DataAccess.Concrete.EntityFramework
                                  CustomerFullName = us.FirstName + " " + us.LastName,
                                  RentDate = re.RentDate,
                                  ReturnDate = re.ReturnDate
+
+
                              };
-                return result.ToList();
-                           
+                return filter == null
+            ? result.ToList()
+            : result.Where(filter).ToList();
+               
             
             }
         }

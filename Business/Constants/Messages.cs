@@ -106,5 +106,6 @@ namespace Business.Constraints
         public static string ErrorUpdatingImage="Araba resmi güncellenirken bir hata oluştu";
         public static string CarImageUploaded="Araba resmi yüklendi";
         public static string CarImageListed="Araba resmi listelendi";
+        public static string RentDateInvalid="Kiralama tarihi geçerli değil";
     }
 }
