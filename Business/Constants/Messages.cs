@@ -107,5 +107,10 @@ namespace Business.Constraints
         public static string CarImageUploaded="Araba resmi yüklendi";
         public static string CarImageListed="Araba resmi listelendi";
         public static string RentDateInvalid="Kiralama tarihi geçerli değil";
+
+        //Payment
+        public static string PaymentAdded="Odeme Basariyla Eklendi";
+        public static string PaymentDeleted="Odeme Basariyla Silindi";
+        public static string PaymentUpdated="Odeme Basariyla Guncellendi";
     }
 }

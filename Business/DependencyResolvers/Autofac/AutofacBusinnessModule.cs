@@ -29,6 +29,15 @@ namespace Business.Dependency_Resolvers.Autofac
             builder.RegisterType<BrandManager>().As<IBrandService>();
             builder.RegisterType<EfBrandDal>().As<IBrandDal>();
 
+            builder.RegisterType<PaymentManager>().As<IPaymentService>();
+            builder.RegisterType<EfPaymentDal>().As<IPaymentDal>();
+
+            builder.RegisterType<SavedCreditCardManager>().As<ISavedCreditCardService>();
+            builder.RegisterType<EfSavedCreditCardDal>().As<ISavedCreditCardDal>();
+
+            builder.RegisterType<FromBankCreditCardManager>().As<IFromBankCreditCardService>();
+            builder.RegisterType<EfFromBankCreditCardDal>().As<IFromBankCreditCardDal>();
+
             builder.RegisterType<ColorManager>().As<IColorService>();
             builder.RegisterType<EfColorDal>().As<IColorDal>();
 
