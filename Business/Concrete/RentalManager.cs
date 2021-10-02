@@ -30,7 +30,7 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         public IResult Add(Rental rental)
         {
             
@@ -47,7 +47,7 @@ namespace Business.Concrete
 
         }
         [CacheRemoveAspect("IRentalService.Get")]
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
 
         public IResult Delete(Rental rental)
         {
@@ -80,7 +80,7 @@ namespace Business.Concrete
         
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         public IResult Update(Rental rental)
         {
 
@@ -125,6 +125,35 @@ namespace Business.Concrete
         public IDataResult<List<Rental>> GetRentalByCarId(int carId)
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(p => p.CarID == carId));
+        }
+
+        public IResult Rentalable(Rental rental)
+        {
+            IResult result = BusinnessRules.Run(DateCheck(rental));
+            if (result != null)
+            {
+                return result;
+            }
+            return new SuccessResult("Başarılı");
+        }
+        private IResult DateCheck(Rental entity)
+        {
+            var rentalalbe = this.GetAll();
+            foreach (var rental in rentalalbe.Data)
+            {
+                if (rental.CarID == entity.CarID)
+                {
+                    if (entity.RentDate >= rental.RentDate && entity.RentDate <= rental.ReturnDate)
+                    {
+                        return new ErrorResult("Geçersiz Tarih");
+                    }
+                    else if (entity.ReturnDate >= rental.RentDate && entity.ReturnDate <= rental.ReturnDate)
+                    {
+                        return new ErrorResult("Geçersiz Tarih");
+                    }
+                }
+            }
+            return new SuccessResult();
         }
     }
 }

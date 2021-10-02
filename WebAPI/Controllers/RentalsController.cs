@@ -91,5 +91,20 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        [HttpPost("rentalable")]
+        public IActionResult Rentalable(Rental rental)
+        {
+            var result = _rentalService.Rentalable(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("payment")]
+        public IActionResult Payment()
+        {
+            return Ok(true);
+        }
     }
 }
