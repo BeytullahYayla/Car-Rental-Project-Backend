@@ -152,6 +152,11 @@ namespace Business.Concrete
                         return new ErrorResult("Geçersiz Tarih");
                     }
                 }
+                else
+                {
+                    return new ErrorResult("CarID de sıkıntı var");
+                }
+                
             }
             return new SuccessResult();
         }

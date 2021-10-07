@@ -37,7 +37,7 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(CarValidator))]
-        [SecuredOperation("admin,car.add")]
+        //[SecuredOperation("admin,car.add")]
         [CacheRemoveAspect("ICarService.Get")]
         
 
@@ -65,7 +65,7 @@ namespace Business.Concrete
 
         }
         [CacheRemoveAspect("ICarService.Get")]
-        [SecuredOperation("admin,car.delete")]
+       // [SecuredOperation("admin,car.delete")]
         public IResult Delete(Car car)
         {
             IResult result = BusinnessRules.Run(CheckIfCarExists(car));
