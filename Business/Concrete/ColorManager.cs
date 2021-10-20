@@ -26,7 +26,7 @@ namespace Business.Concrete
         }
 
         
-        [SecuredOperation("admin,color.add")]
+       // [SecuredOperation("admin,color.add")]
         public IResult Add(Color color)
         {
             IResult result = BusinnessRules.Run(CheckIfColorExists(color));
@@ -39,7 +39,7 @@ namespace Business.Concrete
         }
 
        
-      [SecuredOperation("admin,color.delete")]
+      //[SecuredOperation("admin,color.delete")]
         public IResult Delete(Color color)
         {
 
@@ -72,7 +72,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Color>(_colorDal.Get(color => color.ColorID == id),Messages.ColorListed);
         }
 
-        [SecuredOperation("admin,car.update")]
+        //[SecuredOperation("admin,car.update")]
         public IResult Update(Color color)
         {
 

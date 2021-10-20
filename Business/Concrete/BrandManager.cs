@@ -26,7 +26,7 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand brand)
@@ -46,7 +46,7 @@ namespace Business.Concrete
 
         }
         [CacheRemoveAspect("IBrandService.Get")]
-        [SecuredOperation("brand.delete,admin")]
+        //[SecuredOperation("brand.delete,admin")]
         public IResult Delete(Brand brand)
         {
 
@@ -70,9 +70,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandsListed);
         }
         [CacheAspect]
-        public IDataResult<Brand> GetById(int id)
+        public IDataResult<List<Brand>> GetById(int id)
         {
-            return new SuccessDataResult<Brand>(_brandDal.Get(brand => brand.BrandID == id), Messages.BrandsListed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(p=>p.BrandID==id),Messages.BrandsListed);
         }
 
         [ValidationAspect(typeof(BrandValidator))]
