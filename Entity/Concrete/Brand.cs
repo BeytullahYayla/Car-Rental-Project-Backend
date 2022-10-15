@@ -11,7 +11,7 @@ namespace Entity.Concrete
     public class Brand : IEntity
     {
         [Key]
-        public int BrandID { get; set; }
+        public int Id { get; set; }
         public string BrandName { get; set; }
     }
 }
