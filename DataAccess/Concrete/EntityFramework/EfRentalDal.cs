@@ -21,7 +21,7 @@ namespace DataAccess.Concrete.EntityFramework
                              join ca in context.Cars
                              on re.CarID equals ca.CarID
                              join br in context.Brands
-                             on ca.BrandID equals br.BrandID
+                             on ca.BrandID equals br.Id
                              join cu in context.Customers
                              on re.CustomerID equals cu.CustomerID
                              join us in context.Users

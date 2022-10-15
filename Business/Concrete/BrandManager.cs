@@ -72,7 +72,7 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<Brand>> GetById(int id)
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(p=>p.BrandID==id),Messages.BrandsListed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(p=>p.Id==id),Messages.BrandsListed);
         }
 
         [ValidationAspect(typeof(BrandValidator))]

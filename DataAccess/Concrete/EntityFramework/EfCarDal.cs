@@ -22,7 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
                              join co in context.Colors
                              on ca.ColorID equals co.ColorID
                              join br in context.Brands
-                             on ca.BrandID equals br.BrandID
+                             on ca.BrandID equals br.Id
 
 
                              select new CarDetailDto
