@@ -149,7 +149,7 @@ namespace Business.Concrete
         }
         private IResult CheckIfCarExists(Car car)
         {
-            var result = _carDal.GetAll(p => p.CarID == car.CarID).Count;
+            var result = _carDal.GetAll(p => p.Id == car.Id).Count;
             if (result != 0)
             {
                 return new SuccessResult();

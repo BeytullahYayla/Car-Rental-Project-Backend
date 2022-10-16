@@ -12,7 +12,7 @@ namespace Entity.Concrete
     {
         
         [Key]
-        public int CustomerID { get; set; }
+        public int Id { get; set; }
         public int UserID { get; set; }
         public string CompanyName { get; set; }
     }

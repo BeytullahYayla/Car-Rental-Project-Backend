@@ -69,7 +69,7 @@ namespace Business.Concrete
 
         public IDataResult<Color> GetById(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(color => color.ColorID == id),Messages.ColorListed);
+            return new SuccessDataResult<Color>(_colorDal.Get(color => color.Id == id),Messages.ColorListed);
         }
 
         //[SecuredOperation("admin,car.update")]
@@ -92,7 +92,7 @@ namespace Business.Concrete
         }
         private IResult CheckIfColorExists(Color color)
         {
-            var result = _colorDal.GetAll(p=>p.ColorID==color.ColorID).Count;
+            var result = _colorDal.GetAll(p=>p.Id==color.Id).Count;
             if (result==0)
             {
                 return new ErrorResult(Messages.ColorNotExists);
