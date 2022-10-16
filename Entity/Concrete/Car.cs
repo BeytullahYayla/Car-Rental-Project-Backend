@@ -11,7 +11,7 @@ namespace Entity.Concrete
     public class Car:IEntity
     {
         [Key]
-        public int CarID { get; set; }
+        public int Id { get; set; }
         public int BrandID { get; set; }
         public int ColorID { get; set; }
         public string ModelYear { get; set; }

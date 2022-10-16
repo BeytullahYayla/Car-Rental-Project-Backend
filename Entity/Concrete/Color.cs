@@ -11,7 +11,7 @@ namespace Entity.Concrete
     public class Color :IEntity
     {
         [Key]
-        public int ColorID { get; set; }
+        public int Id{ get; set; }
         public string ColorName { get; set; }
     }
 }
