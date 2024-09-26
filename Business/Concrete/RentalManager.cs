@@ -34,7 +34,7 @@ namespace Business.Concrete
         public IResult Add(Rental rental)
         {
             
-            IResult result = BusinnessRules.Run(CheckIfRentalExists(rental),IsThatCarDeliveried(rental.RentalID));
+            IResult result = BusinnessRules.Run(CheckIfRentalExists(rental),IsThatCarDeliveried(rental.Id));
             if (result != null)
             {
                 _rentalDal.Add(rental);
@@ -109,7 +109,7 @@ namespace Business.Concrete
        
         private IResult CheckIfRentalExists(Rental rental)
         {
-            var result = _rentalDal.GetAll(p => p.RentalID == rental.RentalID).Count;
+            var result = _rentalDal.GetAll(p => p.Id == rental.Id).Count;
             if (result == 0)
             {
                 return new ErrorResult(Messages.RentalNotExists);

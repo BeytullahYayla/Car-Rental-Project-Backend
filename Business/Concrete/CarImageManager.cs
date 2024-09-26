@@ -56,7 +56,7 @@ namespace Business.Concrete
         {
             /*try
             {*/
-            var image = _carImageDal.Get(c => c.CarImageID == carImage.CarImageID);
+            var image = _carImageDal.Get(c => c.Id == carImage.Id);
             if (image == null)
             {
                 return new ErrorResult("Araba Resmi Silinirken bir hata meydana geldi");
@@ -72,7 +72,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file, CarImage carImage)
         {
-            var isImage = _carImageDal.Get(c => c.CarImageID == carImage.CarImageID);
+            var isImage = _carImageDal.Get(c => c.Id == carImage.Id);
             if (isImage == null)
             {
                 return new ErrorResult("Araba Resmi Bulunamadi");
